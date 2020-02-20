@@ -1,21 +1,66 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "TODO Liste",
+  "name": "Simple Material UI TODO Liste",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "favicon.png",
+      "type": "image/png",
+      "sizes": "24x24"
     },
     {
-      "src": "logo192.png",
+      "src": "icons/logo/192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "icons/logo/144.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "144x144"
+    },
+    {
+      "src": "icons/logo/108.png",
+      "type": "image/png",
+      "sizes": "108x108"
+    },
+    {
+      "src": "icons/logo/96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "icons/logo/72.png",
+      "type": "image/png",
+      "sizes": "72x72"
+    },
+    {
+      "src": "icons/logo/54.png",
+      "type": "image/png",
+      "sizes": "54x54"
+    },
+    {
+      "src": "icons/logo/48.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "icons/logo/36.png",
+      "type": "image/png",
+      "sizes": "36x36"
+    },
+    {
+      "src": "icons/logo/27.png",
+      "type": "image/png",
+      "sizes": "27x27"
+    },
+    {
+      "src": "icons/logo/24.png",
+      "type": "image/png",
+      "sizes": "24x24"
+    },
+    {
+      "src": "icons/logo/18.png",
+      "type": "image/png",
+      "sizes": "18x18"
     }
   ],
   "start_url": ".",
