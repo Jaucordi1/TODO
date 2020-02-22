@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Theme, makeStyles, createStyles, CssBaseline, AppBar, Toolbar, ToolbarProps, Grid, SwipeableDrawer } from "@material-ui/core"
+import { Theme, makeStyles, createStyles, CssBaseline, AppBar, Toolbar, ToolbarProps, Grid, SwipeableDrawer, Hidden, Drawer } from "@material-ui/core"
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
@@ -107,21 +107,40 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
                     {content}
                 </Grid>
             </Grid>
-            <SwipeableDrawer
-                anchor={'right'}
-                open={mobileOpen}
-                onClose={handleDrawerClose()}
-                onOpen={handleDrawerOpen()}
-                classes={{
-                    paper: classes.drawerPaper,
-                }}
-                ModalProps={{
-                    keepMounted: true // Better open performance on mobile.
-                }}
-            // disableBackdropTransition
-            >
-                {drawerContent}
-            </SwipeableDrawer>
+            <Hidden smUp>
+                <SwipeableDrawer
+                    anchor={'right'}
+                    open={mobileOpen}
+                    onClose={handleDrawerClose()}
+                    onOpen={handleDrawerOpen()}
+                    classes={{
+                        paper: classes.drawerPaper,
+                    }}
+                    ModalProps={{
+                        keepMounted: true // Better open performance on mobile.
+                    }}
+                // disableBackdropTransition
+                >
+                    {drawerContent}
+                </SwipeableDrawer>
+            </Hidden>
+            <Hidden xsDown>
+                <Drawer
+                    variant={'permanent'}
+                    anchor={'right'}
+                    open={mobileOpen}
+                    onClose={handleDrawerClose()}
+                    classes={{
+                        paper: classes.drawerPaper,
+                    }}
+                    ModalProps={{
+                        keepMounted: true // Better open performance on mobile.
+                    }}
+                // disableBackdropTransition
+                >
+                    {drawerContent}
+                </Drawer>
+            </Hidden>
         </div>
     )
 }
