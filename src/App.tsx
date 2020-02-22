@@ -5,7 +5,7 @@ import { IS_MOBILE, IS_MOBILE_HARD } from "./Regex"
 import TODOList, { ITODOList, ITODOItem } from "./TodoLists/TODOList"
 import ResponsiveDrawer from "./Components/ResponsiveDrawer"
 import ConfirmationIconButton from "./Components/ConfirmationIconButton"
-import { CssBaseline, ThemeProvider, Container, Grid, Typography, IconButton, Icon, List, ListItem, ListItemIcon, ListItemText, Box, Fab, ListItemSecondaryAction, Divider, Slide, Dialog, AppBar, Toolbar, Button, WithMobileDialog, Switch, FormControlLabel, Input } from "@material-ui/core"
+import { CssBaseline, ThemeProvider, Grid, Typography, IconButton, Icon, List, ListItem, ListItemIcon, ListItemText, Box, Fab, ListItemSecondaryAction, Divider, Slide, Dialog, AppBar, Toolbar, Button, WithMobileDialog, Switch, FormControlLabel, Input } from "@material-ui/core"
 import { TransitionProps } from "@material-ui/core/transitions/transition"
 import { Add as AddIcon, List as ListIcon, Settings as GearIcon, Check as CheckIcon, Close as CloseIcon, Menu as MenuIcon, MenuOpen as OpenMenuIcon } from '@material-ui/icons'
 
@@ -176,100 +176,98 @@ export default function App() {
 	}
 
 	return (
-		<Container fixed={false} maxWidth={false} className={[classes.fullHeight, classes.p0].join(' ')}>
-			<ThemeProvider theme={theme}>
-				<CssBaseline />
-				<ResponsiveDrawer toolbarProps={{ variant: 'dense' }}>{
-					(mobileOpen, drawerToggle, drawerWidth) => [
-						(
-							<Grid container key={'toolbar'} alignItems={'center'} justify={'flex-end'}>
-								{
-									actualList !== undefined && (
-										<Grid item xs>
-											{
-												listNameEditMode
-													? (
-														<form action="" method="post" onSubmit={ev => handleConfirmListNameEdit(ev, actualListIndex)}>
-															<Input id={'todo-list-edit'} defaultValue={actualList.name} inputRef={todoListNameInput} onFocus={handleTODOListNameInputFocus} onBlur={() => {
-																editTODOListNameTimeout = setTimeout(() => setListNameEditMode(false), 100)
-															}} autoFocus />
-															<IconButton onClick={ev => handleConfirmListNameEdit(ev, actualListIndex)}>
-																<CheckIcon />
-																<Typography variant={'srOnly'}>Valider</Typography>
-															</IconButton>
-														</form>
-													)
-													: <Button variant={'text'} onClick={ev => handleEditTODOListName(ev, actualListIndex)}>{actualList.name}</Button>
-											}
-										</Grid>
-									)
-								}
-								<Grid item>
-									<Typography variant="h6" noWrap>TODO Liste</Typography>
-								</Grid>
-								<Grid item>
-									<IconButton
-										color="inherit"
-										aria-label="open drawer"
-										edge="start"
-										onClick={drawerToggle}
-										className={classes.menuButton}>
-										<Icon>{mobileOpen ? <OpenMenuIcon /> : <MenuIcon />}</Icon>
-									</IconButton>
-								</Grid>
-							</Grid>
-						),
-						renderDrawerContent(mobileOpen, drawerToggle),
-						(
-							actualList !== undefined
-								? (
-									<Grid container direction={'column'} justify={'flex-start'} className={classes.fullHeight} spacing={0}>
-										<Grid item xs>
-											<Dialog fullScreen TransitionComponent={Transition} open={configModalListIndex > -1} ref={listConfigModal} disablePortal>
-												<AppBar className={classes.toolbar}>
-													<Toolbar variant={'dense'}>
-														<IconButton size={'small'} edge={'start'} onClick={ev => {
-															handleCloseListConfigModal(ev)
-															if (isMobileDevice() && !mobileOpen)
-																drawerToggle()
-														}}>
-															<CloseIcon />
+		<ThemeProvider theme={theme}>
+			<CssBaseline />
+			<ResponsiveDrawer toolbarProps={{ variant: 'dense' }}>{
+				(mobileOpen, drawerToggle, drawerWidth) => [
+					(
+						<Grid container key={'toolbar'} alignItems={'center'} justify={'flex-end'}>
+							{
+								actualList !== undefined && (
+									<Grid item xs>
+										{
+											listNameEditMode
+												? (
+													<form action="" method="post" onSubmit={ev => handleConfirmListNameEdit(ev, actualListIndex)}>
+														<Input id={'todo-list-edit'} defaultValue={actualList.name} inputRef={todoListNameInput} onFocus={handleTODOListNameInputFocus} onBlur={() => {
+															editTODOListNameTimeout = setTimeout(() => setListNameEditMode(false), 100)
+														}} autoFocus />
+														<IconButton onClick={ev => handleConfirmListNameEdit(ev, actualListIndex)}>
+															<CheckIcon />
+															<Typography variant={'srOnly'}>Valider</Typography>
 														</IconButton>
-														<Typography variant={'h6'} style={{ flex: 1, marginLeft: theme.spacing(2), marginRight: theme.spacing(2) }} noWrap>{actuallyConfiguredList && actuallyConfiguredList.name} - Paramètres</Typography>
-														<ConfirmationIconButton buttonProps={{ size: 'small', color: 'secondary', variant: 'outlined' }} icon={<CloseIcon />} onConfirm={ev => handleDeleteTODOList(ev, configModalListIndex)}>Supprimer</ConfirmationIconButton>
-													</Toolbar>
-												</AppBar>
-												<div className={classes.toolbar} />
-												<List>
-													<ListItem>
-														<FormControlLabel
-															control={<Switch checked={actuallyConfiguredList?.autoDismiss} onChange={handleAutoDismissChange} />}
-															label={<Typography>Supprime une TODO au lieu de la marquer comme terminée</Typography>}
-															labelPlacement={'start'} />
-													</ListItem>
-												</List>
-											</Dialog>
-											<TODOList key={'list'} setup={actualList} onChange={handleTODOListChange} />
-										</Grid>
+													</form>
+												)
+												: <Button variant={'text'} onClick={ev => handleEditTODOListName(ev, actualListIndex)}>{actualList.name}</Button>
+										}
 									</Grid>
 								)
-								: (
-									<Grid container direction={'column'} justify={'center'} className={classes.fullHeight}>
-										<Grid item>
-											<Box textAlign={'center'}>
-												<Typography key={'nolist'} variant={'subtitle2'} align={'center'}>Aucune TODO Liste !</Typography>
-												<br />
-												<Fab color={'primary'} onClick={handleCreateTODOList}>
-													<AddIcon />
-												</Fab>
-											</Box>
-										</Grid>
+							}
+							<Grid item>
+								<Typography variant="h6" noWrap>TODO Liste</Typography>
+							</Grid>
+							<Grid item>
+								<IconButton
+									color="inherit"
+									aria-label="open drawer"
+									edge="start"
+									onClick={drawerToggle}
+									className={classes.menuButton}>
+									<Icon>{mobileOpen ? <OpenMenuIcon /> : <MenuIcon />}</Icon>
+								</IconButton>
+							</Grid>
+						</Grid>
+					),
+					renderDrawerContent(mobileOpen, drawerToggle),
+					(
+						actualList !== undefined
+							? (
+								<Grid container direction={'column'} justify={'flex-start'} className={classes.fullHeight} spacing={0}>
+									<Grid item xs>
+										<Dialog fullScreen TransitionComponent={Transition} open={configModalListIndex > -1} ref={listConfigModal} disablePortal>
+											<AppBar className={classes.toolbar}>
+												<Toolbar variant={'dense'}>
+													<IconButton size={'small'} edge={'start'} onClick={ev => {
+														handleCloseListConfigModal(ev)
+														if (isMobileDevice() && !mobileOpen)
+															drawerToggle()
+													}}>
+														<CloseIcon />
+													</IconButton>
+													<Typography variant={'h6'} style={{ flex: 1, marginLeft: theme.spacing(2), marginRight: theme.spacing(2) }} noWrap>{actuallyConfiguredList && actuallyConfiguredList.name} - Paramètres</Typography>
+													<ConfirmationIconButton buttonProps={{ size: 'small', color: 'secondary', variant: 'outlined' }} icon={<CloseIcon />} onConfirm={ev => handleDeleteTODOList(ev, configModalListIndex)}>Supprimer</ConfirmationIconButton>
+												</Toolbar>
+											</AppBar>
+											<div className={classes.toolbar} />
+											<List>
+												<ListItem>
+													<FormControlLabel
+														control={<Switch checked={actuallyConfiguredList?.autoDismiss} onChange={handleAutoDismissChange} />}
+														label={<Typography>Supprime une TODO au lieu de la marquer comme terminée</Typography>}
+														labelPlacement={'start'} />
+												</ListItem>
+											</List>
+										</Dialog>
+										<TODOList key={'list'} setup={actualList} onChange={handleTODOListChange} />
 									</Grid>
-								)
-						)
-					]
-				}</ResponsiveDrawer>
-			</ThemeProvider>
-		</Container>
+								</Grid>
+							)
+							: (
+								<Grid container direction={'column'} justify={'center'} className={classes.fullHeight}>
+									<Grid item>
+										<Box textAlign={'center'}>
+											<Typography key={'nolist'} variant={'subtitle2'} align={'center'}>Aucune TODO Liste !</Typography>
+											<br />
+											<Fab color={'primary'} onClick={handleCreateTODOList}>
+												<AddIcon />
+											</Fab>
+										</Box>
+									</Grid>
+								</Grid>
+							)
+					)
+				]
+			}</ResponsiveDrawer>
+		</ThemeProvider>
 	)
 }

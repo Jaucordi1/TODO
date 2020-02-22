@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Theme, makeStyles, createStyles, CssBaseline, AppBar, Toolbar, Hidden, Drawer, ToolbarProps, Grid } from "@material-ui/core"
+import { Theme, makeStyles, createStyles, CssBaseline, AppBar, Toolbar, ToolbarProps, Grid, SwipeableDrawer } from "@material-ui/core"
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
@@ -68,6 +68,28 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen)
     }
+    const handleDrawerClose = () => (
+        event: React.KeyboardEvent | React.MouseEvent,
+    ) => {
+        if (
+            event &&
+            event.type === 'keydown' &&
+            ((event as React.KeyboardEvent).key === 'Tab' ||
+                (event as React.KeyboardEvent).key === 'Shift')
+        ) return
+        setMobileOpen(false)
+    }
+    const handleDrawerOpen = () => (
+        event: React.KeyboardEvent | React.MouseEvent,
+    ) => {
+        if (
+            event &&
+            event.type === 'keydown' &&
+            ((event as React.KeyboardEvent).key === 'Tab' ||
+                (event as React.KeyboardEvent).key === 'Shift')
+        ) return
+        setMobileOpen(true)
+    }
 
     const [toolbar, drawerContent, content] = props.children(mobileOpen, handleDrawerToggle, drawerWidth)
 
@@ -85,37 +107,21 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
                     {content}
                 </Grid>
             </Grid>
-            <nav className={classes.drawer} aria-label="mailbox folders">
-                {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-                <Hidden smUp implementation="css">
-                    <Drawer
-                        variant="temporary"
-                        anchor={'right'}
-                        open={mobileOpen}
-                        onClose={handleDrawerToggle}
-                        classes={{
-                            paper: classes.drawerPaper,
-                        }}
-                        ModalProps={{
-                            keepMounted: true, // Better open performance on mobile.
-                        }}
-                    >
-                        {drawerContent}
-                    </Drawer>
-                </Hidden>
-                <Hidden xsDown implementation="css">
-                    <Drawer
-                        anchor={'right'}
-                        classes={{
-                            paper: classes.drawerPaper,
-                        }}
-                        variant="permanent"
-                        open
-                    >
-                        {drawerContent}
-                    </Drawer>
-                </Hidden>
-            </nav>
+            <SwipeableDrawer
+                anchor={'right'}
+                open={mobileOpen}
+                onClose={handleDrawerClose()}
+                onOpen={handleDrawerOpen()}
+                classes={{
+                    paper: classes.drawerPaper,
+                }}
+                ModalProps={{
+                    keepMounted: true // Better open performance on mobile.
+                }}
+            // disableBackdropTransition
+            >
+                {drawerContent}
+            </SwipeableDrawer>
         </div>
     )
 }
