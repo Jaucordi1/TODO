@@ -119,7 +119,7 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
                     ModalProps={{
                         keepMounted: true // Better open performance on mobile.
                     }}
-                // disableBackdropTransition
+                    disableBackdropTransition
                 >
                     {drawerContent}
                 </SwipeableDrawer>
@@ -133,10 +133,6 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
                     classes={{
                         paper: classes.drawerPaper,
                     }}
-                    ModalProps={{
-                        keepMounted: true // Better open performance on mobile.
-                    }}
-                // disableBackdropTransition
                 >
                     {drawerContent}
                 </Drawer>
