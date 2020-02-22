@@ -5,7 +5,7 @@ import { IS_MOBILE, IS_MOBILE_HARD } from "./Regex"
 import TODOList, { ITODOList, ITODOItem } from "./TodoLists/TODOList"
 import ResponsiveDrawer from "./Components/ResponsiveDrawer"
 import ConfirmationIconButton from "./Components/ConfirmationIconButton"
-import { CssBaseline, ThemeProvider, Grid, Typography, IconButton, Icon, List, ListItem, ListItemIcon, ListItemText, Box, Fab, ListItemSecondaryAction, Divider, Slide, Dialog, AppBar, Toolbar, Button, WithMobileDialog, Switch, FormControlLabel, Input } from "@material-ui/core"
+import { CssBaseline, ThemeProvider, Grid, Typography, IconButton, Icon, List, ListItem, ListItemIcon, ListItemText, Box, Fab, ListItemSecondaryAction, Divider, Slide, Dialog, AppBar, Toolbar, Button, WithMobileDialog, Switch, FormControlLabel, Input, Hidden } from "@material-ui/core"
 import { TransitionProps } from "@material-ui/core/transitions/transition"
 import { Add as AddIcon, List as ListIcon, Settings as GearIcon, Check as CheckIcon, Close as CloseIcon, Menu as MenuIcon, MenuOpen as OpenMenuIcon } from '@material-ui/icons'
 
@@ -206,16 +206,18 @@ export default function App() {
 							<Grid item>
 								<Typography variant="h6" noWrap>TODO Liste</Typography>
 							</Grid>
-							<Grid item>
-								<IconButton
-									color="inherit"
-									aria-label="open drawer"
-									edge="start"
-									onClick={drawerToggle}
-									className={classes.menuButton}>
-									<Icon>{mobileOpen ? <OpenMenuIcon /> : <MenuIcon />}</Icon>
-								</IconButton>
-							</Grid>
+							<Hidden smUp>
+								<Grid item>
+									<IconButton
+										color="inherit"
+										aria-label="open drawer"
+										edge="start"
+										onClick={drawerToggle}
+										className={classes.menuButton}>
+										<Icon>{mobileOpen ? <OpenMenuIcon /> : <MenuIcon />}</Icon>
+									</IconButton>
+								</Grid>
+							</Hidden>
 						</Grid>
 					),
 					renderDrawerContent(mobileOpen, drawerToggle),
