@@ -1,44 +1,28 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# TODO Liste
+I created this project for training on TypeScript and learning the [material-ui](https://material-ui.com/) library
 
-In the project directory, you can run:
+This library provides a bunch of React components ready to use and designed the Material way.
 
-### `npm start`
+## DEMO
+1. Clone this repo anywhere
+2. Run `npm i` (or `npm install` for purists =p)
+3. Run `npm run dev`
+4. You're done !
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+After running the last command, the dev-server will start and then open http://localhost:3000 page on your browser automatically
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## PRODUCTION
+1. Clone this repo anywhere
+2. Run `npm i` (or `npm install` for purists =p)
+3. Run `npm run build`
+4. Run `npm start`
+5. You're done !
 
-### `npm test`
+After running the last command, `serve` will host the app and this last one will be available at http://localhost:7080
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- This port can be changed in the `package.json` file in the `start` script.
+- You can use any web-server you want/need. After all, this app is client-side only so you can serve it like you want.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+For production purposes with NodeJS, you can proxy the app available on port 7080 with NGINX for example.
