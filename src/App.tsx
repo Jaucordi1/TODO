@@ -1,16 +1,49 @@
-import React, { useState, useRef } from "react"
+import React, {useRef, useState} from "react"
 import useLocalStorage from 'react-use-localstorage'
-import theme, { useStyles } from './Themes/Dark'
-import { IS_MOBILE, IS_MOBILE_HARD } from "./Regex"
-import TODOList, { ITODOList, ITODOItem } from "./TodoLists/TODOList"
+import theme, {useStyles} from './Themes/Dark'
+import {IS_MOBILE, IS_MOBILE_HARD} from "./Regex"
+import TODOList, {ITODOItem, ITODOList} from "./TodoLists/TODOList"
 import ResponsiveDrawer from "./Components/ResponsiveDrawer"
 import ConfirmationIconButton from "./Components/ConfirmationIconButton"
-import { CssBaseline, ThemeProvider, Grid, Typography, IconButton, Icon, List, ListItem, ListItemIcon, ListItemText, Box, Fab, ListItemSecondaryAction, Divider, Slide, Dialog, AppBar, Toolbar, Button, WithMobileDialog, Switch, FormControlLabel, Input, Hidden } from "@material-ui/core"
-import { TransitionProps } from "@material-ui/core/transitions/transition"
-import { Add as AddIcon, List as ListIcon, Settings as GearIcon, Check as CheckIcon, Close as CloseIcon, Menu as MenuIcon, MenuOpen as OpenMenuIcon } from '@material-ui/icons'
+import {
+	AppBar,
+	Box,
+	Button,
+	CssBaseline,
+	Dialog,
+	Divider,
+	Fab,
+	FormControlLabel,
+	Grid,
+	Hidden,
+	Icon,
+	IconButton,
+	Input,
+	List,
+	ListItem,
+	ListItemIcon,
+	ListItemSecondaryAction,
+	ListItemText,
+	Slide,
+	Switch,
+	ThemeProvider,
+	Toolbar,
+	Typography,
+	WithMobileDialog
+} from "@material-ui/core"
+import {TransitionProps} from "@material-ui/core/transitions/transition"
+import {
+	Add as AddIcon,
+	Check as CheckIcon,
+	Close as CloseIcon,
+	List as ListIcon,
+	Menu as MenuIcon,
+	MenuOpen as OpenMenuIcon,
+	Settings as GearIcon
+} from '@material-ui/icons'
 
-const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => {
-	return <Slide direction="left" ref={ref} {...props} />
+const Transition = React.forwardRef((props: TransitionProps & { children?: React.ReactElement<any, any> }, ref: React.Ref<unknown>) => {
+	return <Slide direction="up" ref={ref} {...props} />
 })
 const isMobileDevice = (): boolean => {
 	return IS_MOBILE.test(navigator.userAgent) || IS_MOBILE_HARD.test(navigator.userAgent.substr(0, 4))
@@ -19,24 +52,24 @@ const isMobileDevice = (): boolean => {
 // APP
 export default function App() {
 	const classes = useStyles()
-
+	
 	// LOCAL SAVE
 	const [savedTODOLists, saveTODOLists] = useLocalStorage('lists', JSON.stringify([]))
 	const [savedListIndex, saveListIndex] = useLocalStorage('list', '-1')
-
+	
 	// LOCAL STATE
 	const [actualListIndex, setListIndex] = useState<number>(parseInt(savedListIndex, 10))
 	const [TODOLists, setTODOLists] = useState<ITODOList[]>(JSON.parse(savedTODOLists))
 	const [configModalListIndex, setConfigModalListIndex] = useState(-1)
 	const [listNameEditMode, setListNameEditMode] = useState(false)
-
+	
 	// RENDER VARS
 	const actualList = TODOLists.length > 0 ? TODOLists[actualListIndex] : undefined
 	const actuallyConfiguredList = configModalListIndex > -1 ? TODOLists[configModalListIndex] : undefined
 	const listConfigModal = useRef<WithMobileDialog>(null)
 	const todoListNameInput = useRef<HTMLTextAreaElement | HTMLInputElement>(null)
 	let editTODOListNameTimeout: NodeJS.Timeout | undefined
-
+	
 	// ACTIONS
 	const viewTODOList = (listIndex: number) => {
 		saveListIndex(listIndex.toString(10))
@@ -46,7 +79,7 @@ export default function App() {
 		saveTODOLists(JSON.stringify(newLists))
 		setTODOLists(newLists)
 	}
-
+	
 	// EVENTS
 	const handleDrawerListItem = (ev: React.MouseEvent, listIndex: number) => {
 		ev.preventDefault()
@@ -65,37 +98,37 @@ export default function App() {
 	const handleDeleteTODOList = (ev: React.MouseEvent, listIndex: number) => {
 		ev.preventDefault()
 		if (actualList === undefined) return
-
+		
 		const newLists = TODOLists.filter((list, idx) => idx !== listIndex)
 		changeTODOLists(newLists)
 		if (configModalListIndex === listIndex) setConfigModalListIndex(-1)
-
+		
 		if (newLists.length === 0)
 			return viewTODOList(-1)
 		// Il reste des TODO listes !
-
+		
 		if (listIndex === actualListIndex)
 			return viewTODOList(Math.max(-1, listIndex === TODOLists.length - 1 ? actualListIndex - 1 : actualListIndex))
 		// La liste supprimée n'est pas la liste visionnée !
-
+		
 		if (listIndex < actualListIndex)
 			return viewTODOList(newLists.findIndex(list => list.name === actualList.name))
 		// La liste supprimée se trouve AVANT la liste visionnée !
-
+		
 		if (listIndex > actualListIndex)
 			viewTODOList(actualListIndex)
 		// La liste supprimée se trouve APRÈS la liste visionnée !
 	}
 	const handleCreateTODOList = (ev: React.MouseEvent) => {
 		ev.preventDefault()
-
+		
 		let name: string | null = ""
 		const idxFinder = (list: ITODOList) => list.name === name
 		while (name === "" || TODOLists.findIndex(idxFinder) !== -1)
 			name = prompt("Saisir un nom pour la nouvelle TODO Liste !", `Liste #${TODOLists.length + 1}`)
-
+		
 		if (name === null) return
-
+		
 		changeTODOLists([...TODOLists, {
 			name,
 			autoDismiss: false,
@@ -106,10 +139,18 @@ export default function App() {
 		viewTODOList(TODOLists.length)
 	}
 	const handleTODOListChange = (todos: ITODOItem[]) => {
-		changeTODOLists(TODOLists.map((list, idx) => idx === actualListIndex ? { ...list, todos, lastUpdated: new Date() } : list))
+		changeTODOLists(TODOLists.map((list, idx) => idx === actualListIndex ? {
+			...list,
+			todos,
+			lastUpdated: new Date()
+		} : list))
 	}
 	const handleAutoDismissChange = (ev: React.ChangeEvent, value: boolean) => {
-		changeTODOLists(TODOLists.map((list, idx) => idx === configModalListIndex ? { ...list, autoDismiss: value, lastUpdated: new Date() } : list))
+		changeTODOLists(TODOLists.map((list, idx) => idx === configModalListIndex ? {
+			...list,
+			autoDismiss: value,
+			lastUpdated: new Date()
+		} : list))
 	}
 	const handleEditTODOListName = (ev: React.MouseEvent, listIndex: number) => {
 		ev.preventDefault()
@@ -122,19 +163,28 @@ export default function App() {
 			editTODOListNameTimeout = undefined
 		}
 		if (todoListNameInput.current !== null)
-			changeTODOLists(TODOLists.map((list, idx) => idx === listIndex ? { ...list, name: todoListNameInput.current!.value, lastUpdated: new Date() } : list))
+			changeTODOLists(TODOLists.map((list, idx) => idx === listIndex ? {
+				...list,
+				name: todoListNameInput.current!.value,
+				lastUpdated: new Date()
+			} : list))
 		setListNameEditMode(false)
 	}
 	const handleTODOListNameInputFocus = (ev: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 		ev.target.select()
 	}
-
+	
 	// RENDER
 	const renderDrawerContent = (mobileOpen: boolean, drawerToggle: () => void) => {
 		return (
 			<Grid container direction={'column'} className={classes.fullHeight} spacing={0} justify={'flex-start'}>
 				<Grid item className={classes.toolbar}>
-					<Grid container direction={'column'} className={classes.fullHeight} spacing={0} justify={'center'} alignContent={'center'}>
+					<Grid container
+						  direction={'column'}
+						  className={classes.fullHeight}
+						  spacing={0}
+						  justify={'center'}
+						  alignContent={'center'}>
 						<Grid item>
 							<IconButton onClick={handleCreateTODOList} size={'small'}>
 								<>
@@ -150,7 +200,10 @@ export default function App() {
 					<List>
 						{
 							TODOLists.map((list, idx) => (
-								<ListItem key={idx} button onClick={ev => handleDrawerListItem(ev, idx)} selected={idx === actualListIndex}>
+								<ListItem key={idx}
+										  button
+										  onClick={ev => handleDrawerListItem(ev, idx)}
+										  selected={idx === actualListIndex}>
 									<ListItemIcon>
 										<>
 											<ListIcon />
@@ -159,7 +212,8 @@ export default function App() {
 									</ListItemIcon>
 									<ListItemText primary={list.name} />
 									<ListItemSecondaryAction>
-										<IconButton onClick={ev => handleOpenListConfigModal(ev, idx, mobileOpen ? drawerToggle : undefined)} size={'small'}>
+										<IconButton onClick={ev => handleOpenListConfigModal(ev, idx, mobileOpen ? drawerToggle : undefined)}
+													size={'small'}>
 											<>
 												<GearIcon />
 												<Typography variant={'srOnly'}>Paramètres de la liste</Typography>
@@ -174,11 +228,11 @@ export default function App() {
 			</Grid>
 		)
 	}
-
+	
 	return (
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
-			<ResponsiveDrawer toolbarProps={{ variant: 'dense' }}>{
+			<ResponsiveDrawer toolbarProps={{variant: 'dense'}}>{
 				(mobileOpen, drawerToggle, drawerWidth) => [
 					(
 						<Grid container key={'toolbar'} alignItems={'center'} justify={'flex-end'}>
@@ -188,17 +242,25 @@ export default function App() {
 										{
 											listNameEditMode
 												? (
-													<form action="" method="post" onSubmit={ev => handleConfirmListNameEdit(ev, actualListIndex)}>
-														<Input id={'todo-list-edit'} defaultValue={actualList.name} inputRef={todoListNameInput} onFocus={handleTODOListNameInputFocus} onBlur={() => {
-															editTODOListNameTimeout = setTimeout(() => setListNameEditMode(false), 100)
-														}} autoFocus />
+													<form action=""
+														  method="post"
+														  onSubmit={ev => handleConfirmListNameEdit(ev, actualListIndex)}>
+														<Input id={'todo-list-edit'}
+															   defaultValue={actualList.name}
+															   inputRef={todoListNameInput}
+															   onFocus={handleTODOListNameInputFocus}
+															   onBlur={() => {
+																   editTODOListNameTimeout = setTimeout(() => setListNameEditMode(false), 100)
+															   }}
+															   autoFocus />
 														<IconButton onClick={ev => handleConfirmListNameEdit(ev, actualListIndex)}>
 															<CheckIcon />
 															<Typography variant={'srOnly'}>Valider</Typography>
 														</IconButton>
 													</form>
 												)
-												: <Button variant={'text'} onClick={ev => handleEditTODOListName(ev, actualListIndex)}>{actualList.name}</Button>
+												: <Button variant={'text'}
+														  onClick={ev => handleEditTODOListName(ev, actualListIndex)}>{actualList.name}</Button>
 										}
 									</Grid>
 								)
@@ -224,9 +286,17 @@ export default function App() {
 					(
 						actualList !== undefined
 							? (
-								<Grid container direction={'column'} justify={'flex-start'} className={classes.fullHeight} spacing={0}>
+								<Grid container
+									  direction={'column'}
+									  justify={'flex-start'}
+									  className={classes.fullHeight}
+									  spacing={0}>
 									<Grid item xs>
-										<Dialog fullScreen TransitionComponent={Transition} open={configModalListIndex > -1} ref={listConfigModal} disablePortal>
+										<Dialog fullScreen
+												TransitionComponent={Transition}
+												open={configModalListIndex > -1}
+												ref={listConfigModal}
+												disablePortal>
 											<AppBar className={classes.toolbar}>
 												<Toolbar variant={'dense'}>
 													<IconButton size={'small'} edge={'start'} onClick={ev => {
@@ -236,16 +306,30 @@ export default function App() {
 													}}>
 														<CloseIcon />
 													</IconButton>
-													<Typography variant={'h6'} style={{ flex: 1, marginLeft: theme.spacing(2), marginRight: theme.spacing(2) }} noWrap>{actuallyConfiguredList && actuallyConfiguredList.name} - Paramètres</Typography>
-													<ConfirmationIconButton buttonProps={{ size: 'small', color: 'secondary', variant: 'outlined' }} icon={<CloseIcon />} onConfirm={ev => handleDeleteTODOList(ev, configModalListIndex)}>Supprimer</ConfirmationIconButton>
+													<Typography variant={'h6'}
+																style={{
+																	flex: 1,
+																	marginLeft: theme.spacing(2),
+																	marginRight: theme.spacing(2)
+																}}
+																noWrap>{actuallyConfiguredList && actuallyConfiguredList.name} - Paramètres</Typography>
+													<ConfirmationIconButton buttonProps={{
+														size: 'small',
+														color: 'secondary',
+														variant: 'outlined'
+													}}
+																			icon={<CloseIcon />}
+																			onConfirm={ev => handleDeleteTODOList(ev, configModalListIndex)}>Supprimer</ConfirmationIconButton>
 												</Toolbar>
 											</AppBar>
 											<div className={classes.toolbar} />
 											<List>
 												<ListItem>
 													<FormControlLabel
-														control={<Switch checked={actuallyConfiguredList?.autoDismiss} onChange={handleAutoDismissChange} />}
-														label={<Typography>Supprime une TODO au lieu de la marquer comme terminée</Typography>}
+														control={<Switch checked={actuallyConfiguredList?.autoDismiss}
+																		 onChange={handleAutoDismissChange} />}
+														label={
+															<Typography>Supprime une TODO au lieu de la marquer comme terminée</Typography>}
 														labelPlacement={'start'} />
 												</ListItem>
 											</List>
@@ -258,7 +342,9 @@ export default function App() {
 								<Grid container direction={'column'} justify={'center'} className={classes.fullHeight}>
 									<Grid item>
 										<Box textAlign={'center'}>
-											<Typography key={'nolist'} variant={'subtitle2'} align={'center'}>Aucune TODO Liste !</Typography>
+											<Typography key={'nolist'}
+														variant={'subtitle2'}
+														align={'center'}>Aucune TODO Liste !</Typography>
 											<br />
 											<Fab color={'primary'} onClick={handleCreateTODOList}>
 												<AddIcon />
