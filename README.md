@@ -1,9 +1,13 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-# TODO Liste
 I created this project for training on TypeScript and learning the [material-ui](https://material-ui.com/) library
 
 This library provides a bunch of React components ready to use and designed the Material way.
+
+# TODO Liste
+This is a PWA (Progressive Web App), so if you host this app, you can visit it a first time, then install it on your phone or just revisit even if you stop hosting this app.
+
+Even if you use an "online" version, it never depends on internet to display and save your lists, all you datas is saved locally with the help of local storage
 
 ## DEMO
 1. Clone this repo anywhere
